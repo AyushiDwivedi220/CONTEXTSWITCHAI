@@ -1,23 +1,30 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import StatsCards from "../components/dashboard/StatsCards";
 import AIInsights from "../components/dashboard/AIInsights";
+import Button from "../components/ui/Button";
 
 export default function DashboardPage() {
   return (
     <DashboardLayout>
-      <div>
-        <h1 className="text-4xl font-bold">
-          Welcome Back
-        </h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-4xl font-bold">
+            Welcome Back
+          </h1>
 
-        <p className="text-zinc-400 mt-2">
-          Here’s your productivity overview.
-        </p>
+          <p className="text-zinc-400 mt-2">
+            Here’s your productivity overview.
+          </p>
+        </div>
 
-        <StatsCards />
-
-        <AIInsights />
+        <Button>
+          Create Task
+        </Button>
       </div>
+
+      <StatsCards />
+
+      <AIInsights />
     </DashboardLayout>
   );
 }
