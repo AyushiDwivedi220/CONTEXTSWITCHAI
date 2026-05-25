@@ -1,6 +1,7 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import StatsCards from "../components/dashboard/StatsCards";
 import AIInsights from "../components/dashboard/AIInsights";
+import TaskList from "../components/tasks/TaskList";
 import Button from "../components/ui/Button";
 
 export default function DashboardPage() {
@@ -25,6 +26,14 @@ export default function DashboardPage() {
       <StatsCards />
 
       <AIInsights />
+
+      <div className="mt-10">
+        <h2 className="text-2xl font-bold">
+          Recent Tasks
+        </h2>
+
+        <TaskList />
+      </div>
     </DashboardLayout>
   );
 }
