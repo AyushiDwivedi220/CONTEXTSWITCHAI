@@ -17,3 +17,6 @@ node_modules/
 
 # Windows
 Thumbs.db
+
+db.sqlite3
+*.sqlite3
