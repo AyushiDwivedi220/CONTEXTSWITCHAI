@@ -1,27 +1,33 @@
 import { create } from "zustand";
+import { fetchTasks as fetchTasksAPI } from "../services/taskService";
 
 const useTaskStore = create((set) => ({
-  tasks: [
-    {
-      id: 1,
-      title: "Build Authentication API",
-      description: "Implement JWT authentication flow.",
-      priority: "High",
-      status: "In Progress",
-    },
-    {
-      id: 2,
-      title: "Design Dashboard UI",
-      description: "Improve dashboard responsiveness.",
-      priority: "Medium",
-      status: "Pending",
-    },
-  ],
+  tasks: [],
 
-  addTask: (task) =>
-    set((state) => ({
-      tasks: [...state.tasks, task],
-    })),
+  loading: false,
+
+  error: null,
+
+  fetchTasks: async () => {
+    set({
+      loading: true,
+      error: null,
+    });
+
+    try {
+      const tasks = await fetchTasksAPI();
+
+      set({
+        tasks,
+        loading: false,
+      });
+    } catch (error) {
+      set({
+        error: error.message,
+        loading: false,
+      });
+    }
+  },
 }));
 
 export default useTaskStore;

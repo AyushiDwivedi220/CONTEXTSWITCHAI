@@ -35,13 +35,23 @@ export default function LoginForm() {
 
     try {
 
-      const data = await loginUser(formData);
+        const data = await loginUser(formData);
 
-      login(data);
-
-      console.log("Login Successful");
-
-      navigate("/");
+        console.log("JWT Response:", data);
+        
+        login(data);
+        
+        console.log(
+          "Store after login:",
+          useAuthStore.getState()
+        );
+        
+        console.log(
+          "LocalStorage:",
+          localStorage.getItem("auth-storage")
+        );
+        
+        navigate("/");
 
     } catch (err) {
 

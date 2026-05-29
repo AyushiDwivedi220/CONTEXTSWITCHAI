@@ -24,7 +24,7 @@ export default function StatsCards() {
             {item.title}
           </h3>
 
-          <p className="text-3xl font-bold mt-2">
+          <p className="text-4xl font-bold mt-3">
             {item.value}
           </p>
         </Card>
