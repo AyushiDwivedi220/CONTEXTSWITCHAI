@@ -1,5 +1,10 @@
 from django.urls import path
-from .views import test_api, TaskListCreateView
+
+from .views import (
+    test_api,
+    TaskListCreateView,
+    TaskDetailView,
+)
 
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -9,7 +14,17 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     path("test/", test_api),
 
-    path("tasks/", TaskListCreateView.as_view()),
+    path(
+        "tasks/",
+        TaskListCreateView.as_view(),
+        name="task-list-create",
+    ),
+
+    path(
+        "tasks/<int:pk>/",
+        TaskDetailView.as_view(),
+        name="task-detail",
+    ),
 
     path(
         "token/",
