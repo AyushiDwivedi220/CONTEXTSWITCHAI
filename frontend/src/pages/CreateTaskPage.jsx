@@ -1,28 +1,41 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import DashboardLayout from "../layouts/DashboardLayout";
-import { createTask } from "../services/taskService";
 import { useNavigate } from "react-router-dom";
+import useTaskStore from "../store/taskStore";
 
 export default function CreateTaskPage() {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [priority, setPriority] = useState("High");
-  const [status, setStatus] = useState("Pending");
-
   const navigate = useNavigate();
+
+  const createTask = useTaskStore(
+    (state) => state.createTask
+  );
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] =
+    useState("");
+
+  const [priority, setPriority] =
+    useState("MEDIUM");
+
+  const [status, setStatus] =
+    useState("PENDING");
+
+  const [dueDate, setDueDate] =
+    useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       await createTask({
         title,
         description,
-        priority: "Medium",
-        status: "Pending",
+        priority,
+        status,
+        due_date: dueDate || null,
       });
-  
+
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -32,7 +45,6 @@ export default function CreateTaskPage() {
   return (
     <DashboardLayout>
       <div className="relative min-h-[calc(100vh-120px)]">
-
         {/* Background Glows */}
         <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[150px]" />
 
@@ -119,7 +131,9 @@ export default function CreateTaskPage() {
                   rows={6}
                   value={description}
                   onChange={(e) =>
-                    setDescription(e.target.value)
+                    setDescription(
+                      e.target.value
+                    )
                   }
                   placeholder="Describe your task..."
                   className="
@@ -149,15 +163,29 @@ export default function CreateTaskPage() {
                 </label>
 
                 <div className="flex gap-3">
-                  {["Low", "Medium", "High"].map(
-                    (item) => (
-                      <button
-                        key={item}
-                        type="button"
-                        onClick={() =>
-                          setPriority(item)
-                        }
-                        className={`
+                  {[
+                    {
+                      label: "Low",
+                      value: "LOW",
+                    },
+                    {
+                      label: "Medium",
+                      value: "MEDIUM",
+                    },
+                    {
+                      label: "High",
+                      value: "HIGH",
+                    },
+                  ].map((item) => (
+                    <button
+                      key={item.value}
+                      type="button"
+                      onClick={() =>
+                        setPriority(
+                          item.value
+                        )
+                      }
+                      className={`
                         px-5
                         py-3
                         rounded-xl
@@ -165,16 +193,16 @@ export default function CreateTaskPage() {
                         border
 
                         ${
-                          priority === item
+                          priority ===
+                          item.value
                             ? "bg-violet-500 border-violet-500 text-white shadow-lg shadow-violet-500/20"
                             : "bg-white/[0.03] border-white/10 text-zinc-400 hover:border-violet-400/40"
                         }
-                        `}
-                      >
-                        {item}
-                      </button>
-                    )
-                  )}
+                      `}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -186,34 +214,79 @@ export default function CreateTaskPage() {
 
                 <div className="flex gap-3">
                   {[
-                    "Pending",
-                    "In Progress",
-                    "Completed",
+                    {
+                      label: "Pending",
+                      value: "PENDING",
+                    },
+                    {
+                      label: "In Progress",
+                      value:
+                        "IN_PROGRESS",
+                    },
+                    {
+                      label: "Completed",
+                      value:
+                        "COMPLETED",
+                    },
                   ].map((item) => (
                     <button
-                      key={item}
+                      key={item.value}
                       type="button"
                       onClick={() =>
-                        setStatus(item)
+                        setStatus(
+                          item.value
+                        )
                       }
                       className={`
-                      px-5
-                      py-3
-                      rounded-xl
-                      transition-all
-                      border
+                        px-5
+                        py-3
+                        rounded-xl
+                        transition-all
+                        border
 
-                      ${
-                        status === item
-                          ? "bg-fuchsia-500 border-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/20"
-                          : "bg-white/[0.03] border-white/10 text-zinc-400 hover:border-fuchsia-400/40"
-                      }
+                        ${
+                          status ===
+                          item.value
+                            ? "bg-fuchsia-500 border-fuchsia-500 text-white shadow-lg shadow-fuchsia-500/20"
+                            : "bg-white/[0.03] border-white/10 text-zinc-400 hover:border-fuchsia-400/40"
+                        }
                       `}
                     >
-                      {item}
+                      {item.label}
                     </button>
                   ))}
                 </div>
+              </div>
+
+              {/* Due Date */}
+              <div>
+                <label className="block text-sm font-medium text-zinc-300 mb-3">
+                  Due Date
+                </label>
+
+                <input
+                  type="date"
+                  value={dueDate}
+                  onChange={(e) =>
+                    setDueDate(
+                      e.target.value
+                    )
+                  }
+                  className="
+                    w-full
+                    px-5
+                    py-4
+                    bg-white/[0.03]
+                    border
+                    border-white/10
+                    rounded-2xl
+                    text-white
+                    focus:border-violet-400
+                    focus:ring-4
+                    focus:ring-violet-500/20
+                    outline-none
+                  "
+                />
               </div>
 
               {/* Submit */}

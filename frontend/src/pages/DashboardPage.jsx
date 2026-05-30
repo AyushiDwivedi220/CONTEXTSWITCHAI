@@ -16,9 +16,18 @@ export default function DashboardPage() {
     (state) => state.fetchTasks
   );
 
+  const tasks = useTaskStore(
+    (state) => state.tasks
+  );
+
+  const loading = useTaskStore(
+    (state) => state.loading
+  );
+
   useEffect(() => {
     fetchTasks();
-  }, [fetchTasks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <DashboardLayout>
@@ -34,24 +43,40 @@ export default function DashboardPage() {
         </div>
 
         <Button
-          onClick={() => navigate("/tasks/create")}
+          onClick={() =>
+            navigate("/tasks/create")
+          }
         >
           Create Task
         </Button>
       </div>
 
-      <StatsCards />
+      {/* Soon this will use real task stats */}
+      <StatsCards tasks={tasks} />
 
       <div className="mt-10">
         <AIInsights />
       </div>
 
       <div className="mt-10">
-        <h2 className="text-2xl font-semibold mb-4">
-          Recent Tasks
-        </h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-semibold">
+            Recent Tasks
+          </h2>
 
-        <TaskList />
+          <span className="text-zinc-400 text-sm">
+            {tasks.length} Task
+            {tasks.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+
+        {loading ? (
+          <p className="text-zinc-400">
+            Loading tasks...
+          </p>
+        ) : (
+          <TaskList />
+        )}
       </div>
     </DashboardLayout>
   );

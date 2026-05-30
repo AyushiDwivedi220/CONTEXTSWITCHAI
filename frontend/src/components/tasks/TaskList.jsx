@@ -28,13 +28,23 @@ export default function TaskList() {
     );
   }
 
+  if (tasks.length === 0) {
+    return (
+      <p className="mt-8 text-zinc-400">
+        No tasks yet.
+      </p>
+    );
+  }
+
   return (
     <div className="grid gap-6 mt-8">
       {tasks.map((task) => (
+        
         <TaskCard
           key={task.id}
           task={task}
         />
+        
       ))}
     </div>
   );
