@@ -8,27 +8,28 @@ import DashboardPage from "../pages/DashboardPage";
 import LoginPage from "../pages/LoginPage";
 import CreateTaskPage from "../pages/CreateTaskPage";
 import EditTaskPage from "../pages/EditTaskPage";
-import WorkspacePage from "../pages/workspaces/WorkspacePage";
 
-import ProtectedRoute from "./ProtectedRoute";
+import WorkspacePage from "../pages/workspaces/WorkspacePage";
+import WorkspaceDetailsPage from "../pages/workspaces/WorkspaceDetailsPage";
 
 import ProjectsPage from "../pages/projects/ProjectsPage";
 import CreateProjectPage from "../pages/projects/CreateProjectPage";
 import EditProjectPage from "../pages/projects/EditProjectPage";
 import ProjectDashboardPage from "../pages/projects/ProjectDashboardPage";
-import WorkspaceDetailsPage from "../pages/workspaces/WorkspaceDetailsPage";
+
+import SessionsPage from "../pages/SessionsPage";
+
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Routes */}
         <Route
           path="/login"
           element={<LoginPage />}
         />
 
-        {/* Dashboard */}
         <Route
           path="/"
           element={
@@ -38,7 +39,6 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Tasks */}
         <Route
           path="/tasks/create"
           element={
@@ -57,7 +57,6 @@ export default function AppRoutes() {
           }
         />
 
-        {/* Workspaces */}
         <Route
           path="/workspaces"
           element={
@@ -66,17 +65,16 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
-      
 
-      <Route
-  path="/workspaces/:id"
-  element={
-    <ProtectedRoute>
-      <WorkspaceDetailsPage />
-    </ProtectedRoute>
-  }
-/>
-        {/* Projects */}
+        <Route
+          path="/workspaces/:id"
+          element={
+            <ProtectedRoute>
+              <WorkspaceDetailsPage />
+            </ProtectedRoute>
+          }
+        />
+
         <Route
           path="/projects"
           element={
@@ -109,6 +107,15 @@ export default function AppRoutes() {
           element={
             <ProtectedRoute>
               <EditProjectPage />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/sessions"
+          element={
+            <ProtectedRoute>
+              <SessionsPage />
             </ProtectedRoute>
           }
         />
