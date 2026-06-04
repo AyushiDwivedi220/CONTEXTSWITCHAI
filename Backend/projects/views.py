@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 
@@ -11,6 +10,17 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Project.objects.filter(
+        queryset = Project.objects.filter(
             workspace__owner=self.request.user
         )
+
+        workspace_id = self.request.query_params.get(
+            "workspace"
+        )
+
+        if workspace_id:
+            queryset = queryset.filter(
+                workspace_id=workspace_id
+            )
+
+        return queryset

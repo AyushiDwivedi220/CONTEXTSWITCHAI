@@ -1,9 +1,12 @@
 import API from "./api";
 
+
 export const getWorkspaces = async () => {
   const response = await API.get("/api/workspaces/");
   return response.data;
 };
+
+
 
 export const createWorkspace = async (workspaceData) => {
   const response = await API.post(
@@ -22,6 +25,18 @@ export const updateWorkspace = async (
       `/api/workspaces/${workspaceId}/`,
       workspaceData
     );
+  
+    return response.data;
+  };
+
+
+  export const getWorkspace = async (
+    workspaceId
+  ) => {
+    const response =
+      await API.get(
+        `/api/workspaces/${workspaceId}/`
+      );
   
     return response.data;
   };

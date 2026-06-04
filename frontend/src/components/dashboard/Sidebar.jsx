@@ -1,8 +1,51 @@
-import { FaTasks, FaFolderOpen } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import {
+  FaTasks,
+  FaFolderOpen,
+  FaProjectDiagram,
+} from "react-icons/fa";
+
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import useProjectStore from "../../store/projectStore";
+import useWorkspaceStore from "../../store/workspaceStore";
 
 export default function Sidebar() {
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const [showProjects, setShowProjects] =
+    useState(false);
+
+  const [
+    showWorkspaces,
+    setShowWorkspaces,
+  ] = useState(false);
+
+  const {
+    projects,
+    fetchProjects,
+  } = useProjectStore();
+
+  const {
+    workspaces,
+    fetchWorkspaces,
+  } = useWorkspaceStore();
+
+  useEffect(() => {
+    fetchProjects();
+    fetchWorkspaces();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <aside
@@ -34,9 +77,10 @@ export default function Sidebar() {
 
       <nav className="space-y-3">
         {/* Dashboard */}
-        <div
+        <button
           onClick={() => navigate("/")}
           className="
+            w-full
             flex
             items-center
             gap-3
@@ -48,31 +92,181 @@ export default function Sidebar() {
             hover:border-purple-500/20
             border
             border-transparent
+            text-left
           "
         >
           <FaTasks />
           <span>Dashboard</span>
-        </div>
+        </button>
 
         {/* Workspaces */}
-        <div
-          onClick={() => navigate("/workspaces")}
-          className="
-            flex
-            items-center
-            gap-3
-            p-4
-            rounded-2xl
-            cursor-pointer
-            transition-all
-            hover:bg-purple-500/10
-            hover:border-purple-500/20
-            border
-            border-transparent
-          "
-        >
-          <FaFolderOpen />
-          <span>Workspaces</span>
+        <div>
+          <button
+            onClick={() =>
+              setShowWorkspaces(
+                !showWorkspaces
+              )
+            }
+            className="
+              w-full
+              flex
+              items-center
+              gap-3
+              p-4
+              rounded-2xl
+              cursor-pointer
+              transition-all
+              hover:bg-purple-500/10
+              hover:border-purple-500/20
+              border
+              border-transparent
+              text-left
+            "
+          >
+            <FaFolderOpen />
+            <span>Workspaces</span>
+          </button>
+
+          {showWorkspaces && (
+            <div className="ml-6 mt-2 space-y-1">
+              <button
+                onClick={() =>
+                  navigate(
+                    "/workspaces"
+                  )
+                }
+                className="
+                  block
+                  w-full
+                  text-left
+                  px-2
+                  py-2
+                  rounded-lg
+                  text-sm
+                  text-zinc-400
+                  hover:text-white
+                "
+              >
+                View All
+              </button>
+
+              {workspaces.map(
+                (workspace) => (
+                  <button
+                    key={
+                      workspace.id
+                    }
+                    onClick={() =>
+                      navigate(
+                        `/workspaces/${workspace.id}`
+                      )
+                    }
+                    className={`
+                      w-full
+                      text-left
+                      px-3
+                      py-2
+                      rounded-lg
+                      text-sm
+                      transition
+                      ${
+                        location.pathname ===
+                        `/workspaces/${workspace.id}`
+                          ? "bg-purple-500/20 text-purple-300"
+                          : "text-zinc-300 hover:bg-white/5"
+                      }
+                    `}
+                  >
+                    {workspace.name}
+                  </button>
+                )
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Projects */}
+        <div>
+          <button
+            onClick={() =>
+              setShowProjects(
+                !showProjects
+              )
+            }
+            className="
+              w-full
+              flex
+              items-center
+              gap-3
+              p-4
+              rounded-2xl
+              cursor-pointer
+              transition-all
+              hover:bg-purple-500/10
+              hover:border-purple-500/20
+              border
+              border-transparent
+              text-left
+            "
+          >
+            <FaProjectDiagram />
+            <span>Projects</span>
+          </button>
+
+          {showProjects && (
+            <div className="ml-6 mt-2 space-y-1">
+              <button
+                onClick={() =>
+                  navigate(
+                    "/projects"
+                  )
+                }
+                className="
+                  block
+                  w-full
+                  text-left
+                  px-2
+                  py-2
+                  rounded-lg
+                  text-sm
+                  text-zinc-400
+                  hover:text-white
+                "
+              >
+                View All
+              </button>
+
+              {projects.map(
+                (project) => (
+                  <button
+                    key={project.id}
+                    onClick={() =>
+                      navigate(
+                        `/projects/${project.id}`
+                      )
+                    }
+                    className={`
+                      w-full
+                      text-left
+                      px-3
+                      py-2
+                      rounded-lg
+                      text-sm
+                      transition
+                      ${
+                        location.pathname ===
+                        `/projects/${project.id}`
+                          ? "bg-purple-500/20 text-purple-300"
+                          : "text-zinc-300 hover:bg-white/5"
+                      }
+                    `}
+                  >
+                    {project.name}
+                  </button>
+                )
+              )}
+            </div>
+          )}
         </div>
       </nav>
     </aside>

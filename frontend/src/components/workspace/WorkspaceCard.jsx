@@ -1,10 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import useWorkspaceStore from "../../store/workspaceStore";
 
 const WorkspaceCard = ({ workspace }) => {
-  const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
-  const [name, setName] = useState(workspace.name);
+  const [isEditing, setIsEditing] =
+    useState(false);
+
+  const [name, setName] = useState(
+    workspace.name
+  );
 
   const [description, setDescription] =
     useState(workspace.description);
@@ -64,16 +71,50 @@ const WorkspaceCard = ({ workspace }) => {
       {!isEditing ? (
         <div className="flex justify-between items-start">
           <div>
-            <h3 className="text-xl font-semibold text-white">
-              {workspace.name}
-            </h3>
+            <div className="flex items-center gap-3">
+              <h3 className="text-xl font-semibold text-white">
+                {workspace.name}
+              </h3>
+
+              <span
+                className="
+                  text-xs
+                  px-2
+                  py-1
+                  rounded-full
+                  bg-purple-500/20
+                  text-purple-300
+                "
+              >
+                Workspace
+              </span>
+            </div>
 
             <p className="text-zinc-400 mt-2">
               {workspace.description}
             </p>
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap justify-end">
+            <button
+              onClick={() =>
+                navigate(
+                  `/workspaces/${workspace.id}`
+                )
+              }
+              className="
+                bg-blue-600
+                hover:bg-blue-700
+                px-4
+                py-2
+                rounded-lg
+                text-white
+                transition
+              "
+            >
+              Open
+            </button>
+
             <button
               onClick={() =>
                 setIsEditing(true)
@@ -156,7 +197,6 @@ const WorkspaceCard = ({ workspace }) => {
                 py-2
                 rounded-lg
                 text-white
-                transition
               "
             >
               Save
@@ -171,7 +211,6 @@ const WorkspaceCard = ({ workspace }) => {
                 py-2
                 rounded-lg
                 text-white
-                transition
               "
             >
               Cancel
