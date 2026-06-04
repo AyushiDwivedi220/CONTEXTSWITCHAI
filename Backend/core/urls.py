@@ -22,4 +22,14 @@ urlpatterns = [
     ),
 
     path("api/", include("tasks.urls")),
+
+    path(
+        "api/",
+        include("workspaces.urls")
+    ),
+
+    path(
+    "api/",
+    include("projects.urls")
+),
 ]

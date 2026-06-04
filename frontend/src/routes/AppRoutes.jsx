@@ -10,6 +10,7 @@ import CreateTaskPage from "../pages/CreateTaskPage";
 import EditTaskPage from "../pages/EditTaskPage";
 
 import ProtectedRoute from "./ProtectedRoute";
+import WorkspacePage from "../pages/WorkspacePage";
 
 export default function AppRoutes() {
   return (
@@ -46,6 +47,15 @@ export default function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+<Route
+  path="/workspaces"
+  element={
+    <ProtectedRoute>
+      <WorkspacePage />
+    </ProtectedRoute>
+  }
+/>
       </Routes>
     </BrowserRouter>
   );
