@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import Card from "../ui/Card";
 import PriorityBadge from "./PriorityBadge";
 
@@ -64,7 +66,7 @@ export default function TaskCard({ task }) {
         )}
       </div>
 
-      <div className="mt-6 flex gap-3">
+      <div className="mt-6 flex gap-3 flex-wrap">
         {task.status !==
           "COMPLETED" && (
           <button
@@ -83,6 +85,22 @@ export default function TaskCard({ task }) {
             Complete
           </button>
         )}
+
+        <Link
+          to={`/tasks/${task.id}/edit`}
+          className="
+            px-4
+            py-2
+            rounded-lg
+            bg-violet-500
+            hover:bg-violet-600
+            text-white
+            text-sm
+            transition
+          "
+        >
+          Edit
+        </Link>
 
         <button
           onClick={handleDelete}

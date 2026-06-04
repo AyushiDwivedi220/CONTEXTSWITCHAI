@@ -1,23 +1,49 @@
 import Card from "../ui/Card";
 
-export default function StatsCards() {
+export default function StatsCards({
+  tasks,
+}) {
+  const totalTasks = tasks.length;
+
+  const completedTasks =
+    tasks.filter(
+      (task) =>
+        task.status === "COMPLETED"
+    ).length;
+
+  const pendingTasks =
+    tasks.filter(
+      (task) =>
+        task.status !== "COMPLETED"
+    ).length;
+
+  const highPriorityTasks =
+    tasks.filter(
+      (task) =>
+        task.priority === "HIGH"
+    ).length;
+
   const stats = [
     {
-      title: "Active Tasks",
-      value: "12",
+      title: "Total Tasks",
+      value: totalTasks,
     },
     {
       title: "Completed",
-      value: "48",
+      value: completedTasks,
     },
     {
-      title: "AI Suggestions",
-      value: "7",
+      title: "Pending",
+      value: pendingTasks,
+    },
+    {
+      title: "High Priority",
+      value: highPriorityTasks,
     },
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
       {stats.map((item, index) => (
         <Card key={index}>
           <h3 className="text-zinc-400 text-sm">

@@ -1,28 +1,62 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import DashboardLayout from "../layouts/DashboardLayout";
 import TaskForm from "../components/tasks/TaskForm";
-import useTaskStore from "../store/taskStore";
 
-export default function CreateTaskPage() {
+import {
+  getTask,
+  updateTask,
+} from "../services/taskService";
+
+export default function EditTaskPage() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
-  const createTask = useTaskStore(
-    (state) => state.createTask
-  );
+  const [task, setTask] = useState(null);
 
-  const handleCreate = async (
+  const [loading, setLoading] =
+    useState(true);
+
+  useEffect(() => {
+    const fetchTask = async () => {
+      try {
+        const data = await getTask(id);
+
+        setTask(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTask();
+  }, [id]);
+
+  const handleUpdate = async (
     taskData
   ) => {
     try {
-      await createTask(taskData);
+      await updateTask(id, taskData);
 
       navigate("/");
     } catch (error) {
       console.error(error);
     }
   };
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center min-h-[60vh] text-white">
+          Loading...
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -32,26 +66,32 @@ export default function CreateTaskPage() {
 
         <div className="absolute bottom-0 right-0 w-[600px] h-[600px] bg-fuchsia-500/10 rounded-full blur-[180px]" />
 
-        <div className="absolute right-20 bottom-20 w-[350px] h-[350px] bg-purple-400/10 rounded-full blur-[120px]" />
-
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          initial={{
+            opacity: 0,
+            y: 30,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.6,
+          }}
           className="relative z-10 max-w-5xl mx-auto"
         >
           {/* Header */}
           <div className="mb-10">
             <p className="text-violet-400 font-medium tracking-wider uppercase text-sm">
-              Task Creation
+              Task Management
             </p>
 
             <h1 className="text-6xl font-black text-white mt-3 tracking-tight">
-              Create New Task
+              Edit Task
             </h1>
 
             <p className="text-zinc-400 mt-4 text-lg">
-              Transform ideas into organized execution.
+              Update your task details.
             </p>
           </div>
 
@@ -68,15 +108,9 @@ export default function CreateTaskPage() {
             "
           >
             <TaskForm
-              initialValues={{
-                title: "",
-                description: "",
-                priority: "MEDIUM",
-                status: "PENDING",
-                due_date: "",
-              }}
-              onSubmit={handleCreate}
-              submitLabel="Create Task"
+              initialValues={task}
+              onSubmit={handleUpdate}
+              submitLabel="Update Task"
             />
           </div>
         </motion.div>

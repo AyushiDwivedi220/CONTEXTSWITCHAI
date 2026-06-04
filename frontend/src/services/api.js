@@ -4,20 +4,20 @@ import useAuthStore from "../store/authStore";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
-
 API.interceptors.request.use(
-  (config) => {
-    const token =
-      useAuthStore.getState().accessToken;
-
-    if (token) {
-      config.headers.Authorization =
-        `Bearer ${token}`;
+    (config) => {
+      const token =
+        useAuthStore.getState().accessToken;
+  
+      console.log("TOKEN:", token);
+  
+      if (token) {
+        config.headers.Authorization =
+          `Bearer ${token}`;
+      }
+  
+      return config;
     }
-
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
+  );
+  
 export default API;
